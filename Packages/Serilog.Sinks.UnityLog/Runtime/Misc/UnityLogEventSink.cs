@@ -3,6 +3,7 @@ using System.IO;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
+using UnityEngine;
 
 namespace Serilog.Sinks.UnityLog {
 
@@ -15,6 +16,7 @@ namespace Serilog.Sinks.UnityLog {
       _unityLogger = unityLogger;
     }
 
+    [HideInCallstack]
     public void Emit(LogEvent logEvent) {
       using var buffer = new StringWriter();
 

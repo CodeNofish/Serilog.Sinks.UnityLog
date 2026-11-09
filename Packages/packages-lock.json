@@ -159,6 +159,12 @@
         "com.unity.modules.physics": "1.0.0"
       }
     },
+    "serilog.sinks.unitylog": {
+      "version": "file:Serilog.Sinks.UnityLog",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
       "depth": 0,

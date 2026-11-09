@@ -9,9 +9,9 @@ Serilog Sink for Unity Logger.
 Install from git url.
 
 ```text
-"serilog.sinks.unitylog": "https://github.com/CodeNofish/Serilog.Sinks.UnityLog.git?path=/Assets/Serilog.Sinks.UnityLog",
+"serilog.sinks.unitylog": "https://github.com/CodeNofish/Serilog.Sinks.UnityLog.git?path=/Packages/Serilog.Sinks.UnityLog",
 ```
 
 ```text
-https://github.com/CodeNofish/Serilog.Sinks.UnityLog.git?path=/Assets/Serilog.Sinks.UnityLog.git?path=/Assets/Serilog.Sinks.UnityLog
+https://github.com/CodeNofish/Serilog.Sinks.UnityLog.git?path=/Packages/Serilog.Sinks.UnityLog
 ```

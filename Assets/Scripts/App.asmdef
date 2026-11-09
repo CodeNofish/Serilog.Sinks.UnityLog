@@ -1,0 +1,7 @@
+﻿{
+  "name": "App",
+  "rootNamespace": "App",
+  "references": [
+    "Serilog.Sinks.UnityLog"
+  ]
+}

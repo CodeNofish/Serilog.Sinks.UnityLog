@@ -19,7 +19,7 @@
   "dependencies": {
   },
   "samples": [],
-  "documentationUrl": "https://github.com/CodeNofish/Serilog.Sinks.UnityLog/blob/main/Assets/Serilog.Sinks.UnityLog/CHANGELOG.md",
-  "changelogUrl": "https://github.com/CodeNofish/Serilog.Sinks.UnityLog/blob/main/Assets/Serilog.Sinks.UnityLog/CHANGELOG.md",
-  "licensesUrl": "https://github.com/CodeNofish/Serilog.Sinks.UnityLog/blob/main/Assets/Serilog.Sinks.UnityLog/LICENSE.md"
+  "documentationUrl": "https://github.com/CodeNofish/Serilog.Sinks.UnityLog/blob/main/Packages/Serilog.Sinks.UnityLog/CHANGELOG.md",
+  "changelogUrl": "https://github.com/CodeNofish/Serilog.Sinks.UnityLog/blob/main/Packages/Serilog.Sinks.UnityLog/CHANGELOG.md",
+  "licensesUrl": "https://github.com/CodeNofish/Serilog.Sinks.UnityLog/blob/main/Packages/Serilog.Sinks.UnityLog/LICENSE.md"
 }
