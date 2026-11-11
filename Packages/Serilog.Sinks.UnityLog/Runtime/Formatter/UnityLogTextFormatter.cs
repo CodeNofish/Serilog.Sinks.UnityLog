@@ -96,7 +96,7 @@ namespace Serilog.Sinks.UnityLog {
             .Where(f => !string.IsNullOrEmpty(f))
             .ToList();
 
-          var featuresTagMsg = $"[{string.Join(",", features)}]";
+          var featuresTagMsg = $"[{string.Join(",", features)}] ";
           if (Colorized) featuresTagMsg = WrapColor(FeaturesColor, featuresTagMsg);
           output.Write(featuresTagMsg);
         }
