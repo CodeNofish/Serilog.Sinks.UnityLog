@@ -100,6 +100,8 @@ namespace Serilog.Sinks.UnityLog {
         output.Write(logEvent.Exception);
         if (Colorized) output.Write("</color>");
       }
+      
+      output.WriteLine();
     }
 
     private static string WrapColor(string color, string text) {
