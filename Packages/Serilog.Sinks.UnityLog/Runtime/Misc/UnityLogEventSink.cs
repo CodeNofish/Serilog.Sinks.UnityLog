@@ -22,9 +22,9 @@ namespace Serilog.Sinks.UnityLog {
 
       _formatter.Format(logEvent, buffer);
       var logType = logEvent.Level switch {
-        LogEventLevel.Verbose or LogEventLevel.Debug or LogEventLevel.Information => UnityEngine.LogType.Log,
-        LogEventLevel.Warning => UnityEngine.LogType.Warning,
-        LogEventLevel.Error or LogEventLevel.Fatal => UnityEngine.LogType.Error,
+        LogEventLevel.Verbose or LogEventLevel.Debug or LogEventLevel.Information => LogType.Log,
+        LogEventLevel.Warning => LogType.Warning,
+        LogEventLevel.Error or LogEventLevel.Fatal => LogType.Error,
         _ => throw new ArgumentOutOfRangeException(nameof(logEvent.Level), "Unknown log level"),
       };
 

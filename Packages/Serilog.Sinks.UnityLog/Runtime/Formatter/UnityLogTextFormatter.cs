@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Serilog.Events;
 using Serilog.Formatting;
 
@@ -6,8 +7,10 @@ namespace Serilog.Sinks.UnityLog {
 
   public class UnityLogTextFormatter : ITextFormatter {
     private TextFormatterConfig Config { get; }
-    private bool ShowLevel { get; }
     private bool ShowCaller { get; }
+    private bool ShowUnityTag { get; }
+    private bool ShowLevel { get; }
+    private bool ShowFeatures { get; }
     private bool ShowTimestamp { get; }
     private bool Colorized { get; }
     private string VerboseColor { get; }
@@ -17,15 +20,18 @@ namespace Serilog.Sinks.UnityLog {
     private string ErrorColor { get; }
     private string FatalColor { get; }
     private string TimeColor { get; }
-    private string TagColor { get; }
+    private string UnityTagColor { get; }
+    private string CallerColor { get; }
     private string MessageColor { get; }
     private string ExceptionColor { get; }
-    private string CallerColor { get; }
+    private string FeaturesColor { get; }
 
     public UnityLogTextFormatter(TextFormatterConfig config) {
       Config = config;
-      ShowLevel = config.showLevel;
       ShowCaller = config.showCaller;
+      ShowUnityTag = config.showUnityTag;
+      ShowLevel = config.showLevel;
+      ShowFeatures = config.showFeatures;
       ShowTimestamp = config.showTimestamp;
       Colorized = config.enableColorized;
       VerboseColor = config.verboseColor.ToHexRgba();
@@ -35,13 +41,20 @@ namespace Serilog.Sinks.UnityLog {
       ErrorColor = config.errorColor.ToHexRgba();
       FatalColor = config.fatalColor.ToHexRgba();
       TimeColor = config.timestampColor.ToHexRgba();
-      TagColor = config.tagColor.ToHexRgba();
+      UnityTagColor = config.unityTagColor.ToHexRgba();
+      CallerColor = config.callerColor.ToHexRgba();
       MessageColor = config.messageColor.ToHexRgba();
       ExceptionColor = config.exceptionColor.ToHexRgba();
-      CallerColor = config.callerColor.ToHexRgba();
+      FeaturesColor = config.featuresColor.ToHexRgba();
     }
 
     public void Format(LogEvent logEvent, TextWriter output) {
+      if (ShowTimestamp) {
+        var timestamp = $"[{logEvent.Timestamp:HH:mm:ss.fff}] ";
+        if (Colorized) timestamp = WrapColor(TimeColor, timestamp);
+        output.Write(timestamp);
+      }
+
       if (ShowLevel) {
         var levelTag = logEvent.Level switch {
           LogEventLevel.Verbose => "[VRB]",
@@ -68,24 +81,33 @@ namespace Serilog.Sinks.UnityLog {
         output.Write($"{levelTag} ");
       }
 
-      if (ShowTimestamp) {
-        var timestamp = $"[{logEvent.Timestamp:HH:mm:ss.fff}] ";
-        if (Colorized) timestamp = WrapColor(TimeColor, timestamp);
-        output.Write(timestamp);
-      }
-
-      if (ShowCaller) {
-        if (logEvent.Properties.TryGetValue(Const.UnityCallerKey, out var callerValue) && callerValue is ScalarValue callerScalarValue && callerScalarValue.Value is string caller) {
-          var callerTag = $"[{caller}] ";
-          if (Colorized) callerTag = WrapColor(CallerColor, callerTag);
-          output.Write(callerTag);
+      if (ShowUnityTag) {
+        if (logEvent.Properties.TryGetValue(Const.UnityTagKey, out var tagValue) && tagValue is ScalarValue { Value: string tag }) {
+          var unityTagMsg = $"[{tag}] ";
+          if (Colorized) unityTagMsg = WrapColor(UnityTagColor, unityTagMsg);
+          output.Write(unityTagMsg);
         }
       }
+      
+      if (ShowFeatures) {
+        if (logEvent.Properties.TryGetValue(Const.FeatureKey, out var fv) && fv is SequenceValue fsv && fsv.Elements.Count > 0) {
+          var features = fsv.Elements
+            .Select(e => e is ScalarValue { Value: string feature } ? feature : null)
+            .Where(f => !string.IsNullOrEmpty(f))
+            .ToList();
 
-      if (logEvent.Properties.TryGetValue(Const.UnityTagKey, out var tagValue) && tagValue is ScalarValue sv && sv.Value is string tag) {
-        var unityTag = $"[{tag}] ";
-        if (Colorized) unityTag = WrapColor(TagColor, unityTag);
-        output.Write(unityTag);
+          var featuresTagMsg = $"[{string.Join(",", features)}]";
+          if (Colorized) featuresTagMsg = WrapColor(FeaturesColor, featuresTagMsg);
+          output.Write(featuresTagMsg);
+        }
+      }
+      
+      if (ShowCaller) {
+        if (logEvent.Properties.TryGetValue(Const.CallerKey, out var callerValue) && callerValue is ScalarValue { Value: string caller }) {
+          var callerMsg = $"[{caller}] ";
+          if (Colorized) callerMsg = WrapColor(CallerColor, callerMsg);
+          output.Write(callerMsg);
+        }
       }
 
       if (Colorized) output.Write($"<color=#{MessageColor}>");
@@ -100,8 +122,6 @@ namespace Serilog.Sinks.UnityLog {
         output.Write(logEvent.Exception);
         if (Colorized) output.Write("</color>");
       }
-      
-      output.WriteLine();
     }
 
     private static string WrapColor(string color, string text) {

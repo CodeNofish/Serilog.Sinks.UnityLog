@@ -11,8 +11,12 @@ namespace Serilog {
       return logger.ForContext(new UnityTagEnricher(tag));
     }
 
-    public static ILogger WithCaller<T>(this ILogger logger) {
-      return logger.ForContext<T>().ForContext(new UnityCallerEnricher(typeof(T)));
+    public static ILogger WithFeatures(this ILogger logger, params string[] features) {
+      return logger.ForContext(new FeatureNameEnricher(features));
+    }
+
+    public static ILogger WithCaller(this ILogger logger, string caller) {
+      return logger.ForContext(new CallerEnricher(caller));
     }
   }
 

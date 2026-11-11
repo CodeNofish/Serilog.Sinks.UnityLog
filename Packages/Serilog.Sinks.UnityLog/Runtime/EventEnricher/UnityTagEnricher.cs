@@ -1,9 +1,8 @@
-﻿using System;
-using Serilog.Core;
+﻿using Serilog.Core;
 using Serilog.Events;
 
 namespace Serilog.Sinks.UnityLog {
-  
+
   public sealed class UnityTagEnricher : ILogEventEnricher {
     public const string UnityTagKey = Const.UnityTagKey;
 

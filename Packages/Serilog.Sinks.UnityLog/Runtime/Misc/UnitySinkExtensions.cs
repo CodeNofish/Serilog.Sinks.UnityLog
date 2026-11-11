@@ -1,7 +1,6 @@
 ﻿using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
-using Serilog.Formatting;
 
 namespace Serilog.Sinks.UnityLog {
 
@@ -9,11 +8,12 @@ namespace Serilog.Sinks.UnityLog {
     public static LoggerConfiguration UnityLog(
       this LoggerSinkConfiguration config,
       LogEventLevel minLevel,
-      ITextFormatter formatter,
+      TextFormatterConfig formatterConfig,
       LoggingLevelSwitch? levelSwitch = null,
       UnityEngine.ILogger? unityLogger = null) {
 
       unityLogger ??= UnityEngine.Debug.unityLogger;
+      var formatter = new UnityLogTextFormatter(formatterConfig);
 
       return config.Sink(new UnityLogEventSink(formatter, unityLogger), minLevel, levelSwitch);
     }
