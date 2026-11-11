@@ -12,7 +12,7 @@ namespace Serilog {
     }
 
     public static ILogger WithFeatures(this ILogger logger, params string[] features) {
-      return logger.ForContext(new FeatureNameEnricher(features));
+      return logger.ForContext(new FeaturesEnricher(features));
     }
 
     public static ILogger WithCaller(this ILogger logger, string caller) {
